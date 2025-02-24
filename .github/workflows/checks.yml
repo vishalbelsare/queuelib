@@ -5,29 +5,24 @@ jobs:
   checks:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         include:
-        - python-version: 3
-          env:
-            TOXENV: black
-        - python-version: 3
-          env:
-            TOXENV: flake8
-        - python-version: 3
+        - python-version: 3.13
           env:
             TOXENV: pylint
-        - python-version: 3
-          env:
-            TOXENV: security
-        - python-version: 3
+        - python-version: 3.13
           env:
             TOXENV: typing
+        - python-version: 3.13
+          env:
+            TOXENV: twinecheck
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
 
@@ -37,3 +32,9 @@ jobs:
         pip install -U pip
         pip install -U tox
         tox
+
+  pre-commit:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: pre-commit/action@v3.0.1

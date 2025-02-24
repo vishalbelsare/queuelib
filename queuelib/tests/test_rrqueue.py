@@ -1,15 +1,14 @@
-import os
+from pathlib import Path
 
-from queuelib.rrqueue import RoundRobinQueue
 from queuelib.queue import (
-    FifoMemoryQueue,
-    LifoMemoryQueue,
     FifoDiskQueue,
-    LifoDiskQueue,
+    FifoMemoryQueue,
     FifoSQLiteQueue,
+    LifoDiskQueue,
+    LifoMemoryQueue,
     LifoSQLiteQueue,
 )
-
+from queuelib.rrqueue import RoundRobinQueue
 from queuelib.tests import QueuelibTestCase, track_closed
 
 
@@ -127,27 +126,35 @@ class DiskTestMixin:
         self.assertEqual(self.q.close(), [])
 
 
-class FifoDiskRRQueueTest(RRQueueTestMixin, FifoTestMixin, DiskTestMixin, QueuelibTestCase):
+class FifoDiskRRQueueTest(
+    RRQueueTestMixin, FifoTestMixin, DiskTestMixin, QueuelibTestCase
+):
     def qfactory(self, key):
-        path = os.path.join(self.qdir, str(key))
+        path = Path(self.qdir, str(key))
         return track_closed(FifoDiskQueue)(path)
 
 
-class LifoDiskRRQueueTest(RRQueueTestMixin, LifoTestMixin, DiskTestMixin, QueuelibTestCase):
+class LifoDiskRRQueueTest(
+    RRQueueTestMixin, LifoTestMixin, DiskTestMixin, QueuelibTestCase
+):
     def qfactory(self, key):
-        path = os.path.join(self.qdir, str(key))
+        path = Path(self.qdir, str(key))
         return track_closed(LifoDiskQueue)(path)
 
 
-class FifoSQLiteRRQueueTest(RRQueueTestMixin, FifoTestMixin, DiskTestMixin, QueuelibTestCase):
+class FifoSQLiteRRQueueTest(
+    RRQueueTestMixin, FifoTestMixin, DiskTestMixin, QueuelibTestCase
+):
     def qfactory(self, key):
-        path = os.path.join(self.qdir, str(key))
+        path = Path(self.qdir, str(key))
         return track_closed(FifoSQLiteQueue)(path)
 
 
-class LifoSQLiteRRQueueTest(RRQueueTestMixin, LifoTestMixin, DiskTestMixin, QueuelibTestCase):
+class LifoSQLiteRRQueueTest(
+    RRQueueTestMixin, LifoTestMixin, DiskTestMixin, QueuelibTestCase
+):
     def qfactory(self, key):
-        path = os.path.join(self.qdir, str(key))
+        path = Path(self.qdir, str(key))
         return track_closed(LifoSQLiteQueue)(path)
 
 
@@ -192,23 +199,23 @@ class LifoMemoryRRQueueStartDomainsTest(RRQueueStartDomainsTestMixin, QueuelibTe
 
 class FifoDiskRRQueueStartDomainsTest(RRQueueStartDomainsTestMixin, QueuelibTestCase):
     def qfactory(self, key):
-        path = os.path.join(self.qdir, str(key))
+        path = Path(self.qdir, str(key))
         return track_closed(FifoDiskQueue)(path)
 
 
 class LifoDiskRRQueueStartDomainsTest(RRQueueStartDomainsTestMixin, QueuelibTestCase):
     def qfactory(self, key):
-        path = os.path.join(self.qdir, str(key))
+        path = Path(self.qdir, str(key))
         return track_closed(LifoDiskQueue)(path)
 
 
 class FifoSQLiteRRQueueStartDomainsTest(RRQueueStartDomainsTestMixin, QueuelibTestCase):
     def qfactory(self, key):
-        path = os.path.join(self.qdir, str(key))
+        path = Path(self.qdir, str(key))
         return track_closed(FifoSQLiteQueue)(path)
 
 
 class LifoSQLiteRRQueueStartDomainsTest(RRQueueStartDomainsTestMixin, QueuelibTestCase):
     def qfactory(self, key):
-        path = os.path.join(self.qdir, str(key))
+        path = Path(self.qdir, str(key))
         return track_closed(LifoSQLiteQueue)(path)

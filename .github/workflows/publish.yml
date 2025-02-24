@@ -8,18 +8,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
-    - name: Set up Python 3
-      uses: actions/setup-python@v2
+    - name: Set up Python 3.13
+      uses: actions/setup-python@v5
       with:
-        python-version: 3
+        python-version: 3.13
+
+    - name: Build
+      run: | 
+        pip install --upgrade build twine
+        python -m build
 
     - name: Publish to PyPI
-      run: |
-        pip install --upgrade pip
-        pip install --upgrade setuptools wheel twine
-        python setup.py sdist bdist_wheel
-        export TWINE_USERNAME=__token__
-        export TWINE_PASSWORD=${{ secrets.PYPI_TOKEN }}
-        twine upload dist/*
+      uses: pypa/gh-action-pypi-publish@v1.10.3
+      with:
+        password: ${{ secrets.PYPI_TOKEN }}
